@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facebook Login via API</title>
+<meta charset="UTF-8">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100vh;
+	background-color: lightblue;
+}
+
+.container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.left, .right, form {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.left {
+	width: 500px;
+	align-items: flex-start;
+}
+
+.left h1 {
+	font-family: "facebook letter faces";
+	font-size: 60px;
+	color: #1877f2;
+}
+
+.left p {
+	font-size: 30px;
+	color: #1c1e21;
+	height: 200px;
+	font-family: "Roboto Condensed", sans-serif;
+}
+
+.right {
+	width: 400px;
+}
+
+form {
+	background-color: white;
+	border-radius: 10px;
+	width: 400px;
+	display: flex;
+	padding: 20px;
+	margin-bottom: 25px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+form input {
+	width: 100%;
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: 1px solid #999;
+	outline: none;
+	font-size: 16px;
+}
+
+.Login {
+	background-color: lightblue;
+	padding: 15px;
+	text-align: center;
+	text-decoration: none;
+	width: 100%;
+	border-radius: 5px;
+	color: white;
+	font-size: 20px;
+	font-family: 'Arial';
+	font-weight: 700;
+	transition: 0.5s;
+}
+
+.Login {
+	background-color: voilet;
+}
+
+.forget {
+	margin: 15px 0;
+	text-decoration: none;
+	color: #1877f2;
+	font-family: 'Arial';
+	font-size: 14px;
+}
+
+.sign-up {
+	padding-top: 20px;
+	border-top: 1px solid #999;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.signupBtn {
+	background-color: #42b72a;
+	padding: 15px;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 5px;
+	color: white;
+	font-size: 17px;
+	font-family: 'Arial';
+	font-weight: 600;
+	transition: 0.5s;
+}
+
+.signupBtn:hover {
+	background-color: green;
+}
+
+.right p {
+	font-family: 'Arial';
+	font-size: 15px;
+}
+
+@media ( max-width :950px) {
+	.container {
+		flex-direction: column;
+	}
+	.left {
+		width: 400px;
+		align-content: center;
+		align-items: center;
+	}
+	.left p {
+		height: 75px;
+	}
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="left">
+			<h1 class="fb">facebook</h1>
+			<p>Facebook helps you connect and share with the people in your
+				life.</p>
+		</div>
+		<div class="right">
+			<form action="">
+				<input type="text" placeholder="Email addess or phone number"
+					value="xxxyyy@gmail.com"> <input type="password"
+					placeholder="Password" value="123022222">
+				<p>Click this button to Login facebook via API</p>
+				<fb:login-button class="Login" scope="public_profile,email"
+					onlogin="checkLoginState();">
+				</fb:login-button>
+
+				<input class="Logout" type="button" value="Logout"
+					onclick="Logout();" /> <a href="" class="forget">Forgotten
+					password?</a>
+				<div class="sign-up">
+					<a href="" class="signupBtn">Create New Account</a>
+				</div>
+			</form>
+			<form id="form">
+				<input type="text" id="User-id" placeholder="User-Id">
+				<button type="submit">Click to get profile picture</button>
+			</form>
+			<a id="link"></a>
+
+		</div>
+	</div>
+
+	<script>
+
+  function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    console.log('statusChangeCallback');
+    console.log(response);                   // The current login status of the person.
+    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+      testAPI();  
+    } else {                                 // Not logged into your webpage or we are unable to tell.
+      document.getElementById('status').innerHTML 
+    }
+  }
+
+
+  function checkLoginState() {               // Called when a person is finished with the Login Button.
+    FB.getLoginStatus(function(response) {   // See the onlogin handler
+      statusChangeCallback(response);
+    });
+  }
+
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '240707111530029',
+      cookie     : true,                     // Enable cookies to allow the server to access the session.
+      xfbml      : true,                     // Parse social plugins on this webpage.
+      version    : 'v2.8'           // Use this Graph API version for this call.
+    });
+    
+    
+    
+    
+    
+    
+    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+      statusChangeCallback(response);        // Returns the login status.
+    });
+  };
+  
+ 
+ 
+  
+  
+  function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      alert("Thanks for logging in "+response.name+" ,Welcome to facebook!!")
+    },
+   );
+  }
+ 
+  
+  
+  function Logout() {
+	  FB.logout(function () { document.location.reload(); });
+	}
+  
+</script>
+
+
+
+
+
+
+	<script>
+var form = document.getElementById("form");
+
+form.addEventListener("submit",function(event) {
+	
+	event.preventDefault();
+	
+	var id = document.getElementById("User-id").value;
+	
+	if(id == "")
+		{
+		alert("Please Enter the Valid User Id")
+		return;
+		}
+	
+	var url ="http://graph.facebook.com/v13.0/4/picture?type=large&redirect=true&width=500&height="
+	var a = document.getElementById("link");
+	
+	link.href=url;
+	
+	link.click();
+})
+
+
+
+</script>
+
+
+
+	<div id="status"></div>
+
+	<!-- Load the JS SDK asynchronously -->
+	<script async defer crossorigin="anonymous"
+		src="https://connect.facebook.net/en_US/sdk.js"></script>
+</body>
+</html>
+
+
+
